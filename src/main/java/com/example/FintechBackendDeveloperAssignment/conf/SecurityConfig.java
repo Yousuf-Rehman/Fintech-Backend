@@ -20,14 +20,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {  // Me and yousaf are using this for testing purpose onlyu
+
+// Me and yousaf are using this for testing purpose onlyu
+/*    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
                 .withUser("user")
                 .password(passwordEncoder().encode("password"))
                 .roles("USER");
-    }
+    }*/
 
 
     @Bean

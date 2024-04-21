@@ -19,8 +19,5 @@ public class UserRegistrationDTO {
     @NotBlank
     @Size(min = 6, max = 100)
     private String password;
-
-
-    // Constructors, getters, and setters
 }
 
