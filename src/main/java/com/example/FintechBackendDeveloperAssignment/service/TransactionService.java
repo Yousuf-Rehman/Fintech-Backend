@@ -4,6 +4,7 @@ import com.example.FintechBackendDeveloperAssignment.model.Transaction;
 import com.example.FintechBackendDeveloperAssignment.model.User;
 import com.example.FintechBackendDeveloperAssignment.repository.TransactionRepository;
 import com.example.FintechBackendDeveloperAssignment.repository.UserRepository;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

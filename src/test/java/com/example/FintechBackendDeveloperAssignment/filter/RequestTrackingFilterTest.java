@@ -1,58 +1,71 @@
 package com.example.FintechBackendDeveloperAssignment.filter;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
-import jakarta.servlet.ServletException;
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.MDC;
-import org.springframework.mock.web.MockFilterChain;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
+import java.util.UUID;
 
-import java.io.IOException;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class RequestTrackingFilterTest {
 
     @Mock
-    private MDC mdc;
+    private HttpServletRequest mockRequest;
 
-    private RequestTrackingFilter filter;
+    @Mock
+    private HttpServletResponse mockResponse;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        filter = new RequestTrackingFilter();
-    }
+    @Mock
+    private FilterChain mockFilterChain;
 
     @Test
-    public void testDoFilter() throws IOException, ServletException {
-        // Create mock objects
-//        MockHttpServletRequest request = new MockHttpServletRequest();
-//        MockHttpServletResponse response = new MockHttpServletResponse();
-//        MockFilterChain filterChain = new MockFilterChain();
-//
-//        // Set up expectations
-//        doAnswer(invocation -> {
-//            String key = invocation.getArgument(0);
-//            String value = invocation.getArgument(1);
-//            // Verify that the key is "traceId" and value is not null
-//            assert key.equals("traceId");
-//            assert value != null;
-//            return null;
-//        }).when(mdc).put(any(), any());
-//
-//        // Call the filter
-//        filter.doFilter(request, response, filterChain);
-//
-//        // Verify that MDC.put() is called with the correct key-value pair
-//        verify(mdc).put(eq("traceId"), any(String.class));
-//
-//        // Verify that the filter chain is called
-//        verify(filterChain).doFilter(request, response);
+    public void testDoFilter_NoTraceIdHeader() throws Exception {
+        // Initialize mocks
+        MockitoAnnotations.initMocks(this);
+
+        // Create filter instance
+        RequestTrackingFilter filter = new RequestTrackingFilter();
+
+        // Mock request without traceId header
+        when(mockRequest.getHeader("X-Trace-Id")).thenReturn(null);
+
+        // Invoke filter's doFilter method
+        filter.doFilter(mockRequest, mockResponse, mockFilterChain);
+
+        // Verify behavior
+        verify(mockResponse).addHeader(eq("X-Trace-Id"), anyString()); // Use eq() for direct values
+        verify(mockFilterChain).doFilter(any(ServletRequest.class), any(ServletResponse.class)); // Use any() for direct values
+        verify(mockResponse).getStatus();
+    }
+
+
+    @Test
+    public void testDoFilter_WithTraceIdHeader() throws Exception {
+        // Initialize mocks
+        MockitoAnnotations.initMocks(this);
+
+        // Create filter instance
+        RequestTrackingFilter filter = new RequestTrackingFilter();
+
+        // Mock request with traceId header
+        String traceId = UUID.randomUUID().toString();
+        when(mockRequest.getHeader("X-Trace-Id")).thenReturn(traceId);
+
+        // Invoke filter's doFilter method
+        filter.doFilter(mockRequest, mockResponse, mockFilterChain);
+
+        // Verify behavior
+        verify(mockResponse).addHeader("X-Trace-Id", traceId);
+        verify(mockFilterChain).doFilter(mockRequest, mockResponse);
+        verify(mockResponse).getStatus();
     }
 }
