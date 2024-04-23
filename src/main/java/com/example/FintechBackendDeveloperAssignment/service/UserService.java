@@ -5,15 +5,16 @@ import com.example.FintechBackendDeveloperAssignment.model.User;
 import com.example.FintechBackendDeveloperAssignment.repository.UserRepository;
 import org.slf4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final Logger logger;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, Logger logger) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, Logger logger) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.logger = logger;
