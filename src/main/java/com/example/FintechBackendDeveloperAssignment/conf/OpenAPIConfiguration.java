@@ -7,10 +7,20 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@OpenAPIDefinition
 public class OpenAPIConfiguration {
 
     @Bean
@@ -20,7 +30,7 @@ public class OpenAPIConfiguration {
         server.setDescription("Development");
 
         Contact myContact = new Contact();
-        myContact.setName("Jane Doe");
+        myContact.setName("Umair && Yousaf");
         myContact.setEmail("your.email@gmail.com");
 
         Info information = new Info()

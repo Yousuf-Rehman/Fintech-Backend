@@ -27,7 +27,8 @@ public class SecurityConfig {
             return http
                     .authorizeHttpRequests(authCustomizer -> authCustomizer
                             .requestMatchers(HttpMethod.POST,
-                                    "/api/users/register", "/api/users/login", "/swagger-ui/**").permitAll()
+                                    "/api/users/register", "/api/users/login").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("USER")
                             .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("USER")
                             .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("USER")
